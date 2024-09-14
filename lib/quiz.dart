@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quizapp/question_screen.dart';
 import 'package:quizapp/start_screen.dart';
+import 'package:quizapp/data/questions.dart';
 
 class Quiz extends StatefulWidget {
   Quiz({super.key});
@@ -13,6 +14,18 @@ class Quiz extends StatefulWidget {
 
 class _QuizState extends State<Quiz> {
   var activeScreen = 'start-screen';
+  List<String> selectedAnswer = [];
+
+  void chooseAnswer(String answer) {
+    selectedAnswer.add(answer);
+
+    if (selectedAnswer.length == questions.length) {
+      setState(() {
+        selectedAnswer = [];
+        activeScreen = 'start-screen';
+      });
+    }
+  }
 
   void switchScreen() {
     setState(() {
@@ -25,12 +38,14 @@ class _QuizState extends State<Quiz> {
     Widget screenWidget = Start_Screen(switchScreen);
 
     if (activeScreen == 'Question-screen') {
-      screenWidget = QuestionScreen();
+      screenWidget = QuestionScreen(
+        onSelectAnswer: chooseAnswer,
+      );
     }
     return MaterialApp(
       home: Scaffold(
         // Corrected the widget name from 'cScaffold' to 'Scaffold'
-        
+
         body: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
