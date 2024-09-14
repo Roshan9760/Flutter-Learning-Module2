@@ -12,29 +12,25 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  
-  Widget? activeScreen ;
-
-  @override
-  void initState() {
-    activeScreen = Start_Screen(switchScreen);
-    super.initState();
-  }
+  var activeScreen = 'start-screen';
 
   void switchScreen() {
     setState(() {
-      activeScreen = QuestionScreen();
+      activeScreen = 'Question-screen';
     });
   }
 
   @override
   Widget build(context) {
+    Widget screenWidget = Start_Screen(switchScreen);
+
+    if (activeScreen == 'Question-screen') {
+      screenWidget = QuestionScreen();
+    }
     return MaterialApp(
       home: Scaffold(
         // Corrected the widget name from 'cScaffold' to 'Scaffold'
-        appBar: AppBar(
-          title: const Text('Welcome To Quiz App'),
-        ),
+        
         body: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -45,7 +41,7 @@ class _QuizState extends State<Quiz> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           )),
-          child: activeScreen,
+          child: screenWidget,
         ),
       ),
     );
